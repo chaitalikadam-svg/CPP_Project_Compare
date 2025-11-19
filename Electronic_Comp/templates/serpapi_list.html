@@ -1,0 +1,23 @@
+<h2>Results for "{{ query }}"</h2>
+
+<form method="get" action="{% url 'serpapi_search_view' %}">
+  <input type="text" name="q" value="{{ query }}" placeholder="Search products..." />
+  <button type="submit">Search</button>
+</form>
+
+{% if error %}
+  <p style="color:red;">{{ error }}</p>
+{% endif %}
+
+<table>
+  <tr><th>Title</th><th>Price</th><th>Source</th><th>Link</th><th>Image</th></tr>
+  {% for p in products %}
+    <tr>
+      <td>{{ p.title }}</td>
+      <td>{{ p.price }}</td>
+      <td>{{ p.source }}</td>
+      <td><a href="{{ p.link }}" target="_blank">View</a></td>
+      <td><img src="{{ p.thumbnail }}" alt="{{ p.title }}" width="100"></td>
+    </tr>
+  {% endfor %}
+</table>

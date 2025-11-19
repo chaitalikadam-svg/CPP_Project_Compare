@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>{% block title %}Display the content{% endblock %}</title>
+</head>
+<body class="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 min-h-screen text-gray-900">
+
+<!-- Navbar -->
+<nav class="bg-gray-900 px-6 py-4 text-white shadow-lg flex justify-between items-center">
+  <h1 class="text-xl font-bold tracking-wide">CPP Project</h1>
+  <div class="space-x-6">
+    <a href="{% url 'mobile_view' %}?category=mobile" class="hover:text-yellow-400 transition">Mobile</a>
+    <a href="{% url 'mobile_view' %}?category=laptop" class="hover:text-yellow-400 transition">Laptop</a>
+    <a href="{% url 'mobile_view' %}?category=tv" class="hover:text-yellow-400 transition">TV</a>
+    <a href="{% url 'mobile_view' %}?category=induction%20top" class="hover:text-yellow-400 transition">Induction Top</a>
+    <a href="{% url 'mobile_view' %}?category=heaters" class="hover:text-yellow-400 transition">Heaters</a>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main class="p-8">
+  <div class="bg-white/90 backdrop-blur-md shadow-2xl rounded-xl p-10">
+    {% block content %}
+    <!-- Child templates inject content here -->
+    {% endblock %}
+  </div>
+</main>
+
+</body>
+</html>
