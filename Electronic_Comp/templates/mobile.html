@@ -1,0 +1,64 @@
+{% extends 'display.html' %}
+
+{% block title %}Mobile{% endblock %}
+
+{% block content %}
+  <h1 class="text-3xl font-bold mb-6">{{ category|title }} Products</h1>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {% for product in products %}
+      <div class="flex flex-col bg-white p-4 rounded-lg shadow-md">
+
+        <!-- Product Details -->
+        <div class="flex flex-row">
+          <div class="flex-1 pr-4">
+            <h2 class="text-xl font-semibold mb-2">{{ product.name }}</h2>
+            <p class="text-gray-700 mb-2"><strong>Brand:</strong> {{ product.brand }}</p>
+            <p class="text-gray-700 mb-2"><strong>Price:</strong> ${{ product.price }}</p>
+
+            {% if product.features %}
+              <ul class="list-disc ml-5 text-gray-600 text-sm">
+                {% for key, value in product.features.items %}
+                  <li><strong>{{ key }}:</strong> {{ value }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="text-sm text-gray-500">No features listed.</p>
+            {% endif %}
+          </div>
+
+            <!-- Product Image -->
+          <div class="w-48 h-48 flex-shrink-0 overflow-hidden bg-white border rounded">
+            <img src="{{ product.image_url }}" alt="{{ product.name }}"
+                 class="w-full h-full object-cover" loading="lazy" />
+          </div>
+
+        </div>
+
+              <div class="mt-4">
+                <button onclick="competitor_prices('{{ product.productid }}')" 
+                        class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition">
+                  Show Competitor Prices
+                </button>
+            <!-- Empty div where competitor prices will be injected -->
+            <div id="competitor-{{ product.productid }}" class="mt-2"></div> </div>
+              <script>
+                    function competitor_prices(productId) {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("GET", "/competitor-prices/" + productId + "/", true);
+                        xhr.onload = function() {
+                            if (xhr.status === 200) {
+                                document.getElementById("competitor-" + productId).innerHTML = xhr.responseText;
+                            } else {
+                                document.getElementById("competitor-" + productId).innerHTML =
+                                    "<p class='text-red-600'>Error loading competitor prices</p>";
+                            }
+                        };
+                        xhr.send();
+                    }
+              </script>
+              
+            </div>
+    {% endfor %}
+  </div>
+{% endblock %}

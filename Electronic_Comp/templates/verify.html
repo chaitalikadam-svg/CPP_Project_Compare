@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verify Account</title>
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500">
+
+  <div class="bg-white/90 backdrop-blur-md shadow-2xl rounded-xl p-10 w-full max-w-md">
+    <!-- Heading -->
+    <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-8">
+      Verify Account
+    </h2>
+
+    <!-- Form -->
+    <form method="post" action="{% url 'verify' %}" class="space-y-6">
+      {% csrf_token %}
+
+      <!-- Verification Code -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700">Verification Code</label>
+        <input type="text" name="code" required
+          class="mt-2 w-full rounded-lg border border-gray-300 px-4 py-2 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none"/>
+      </div>
+
+      <!-- Submit Button -->
+      <div>
+        <button type="submit"
+          class="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-semibold py-3 px-4 rounded-lg shadow-md hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition">
+          Verify
+        </button>
+      </div>
+    </form>
+
+  </div>
+
+</body>
+</html>
