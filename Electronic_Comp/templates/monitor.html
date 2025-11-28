@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CloudWatch Metrics Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white">
+
+<header class="bg-gray-800 p-4 shadow-md">
+    <h1 class="text-3xl font-bold text-center">CloudWatch Metrics Dashboard</h1>
+</header>
+
+<main class="p-6 space-y-8">
+
+    <!-- Iterate over services -->
+    {% for service, data in metrics.items %}
+    <section class="bg-gray-800 p-4 rounded-lg shadow-md">
+        <h2 class="text-xl font-semibold mb-2">{{ service }}</h2>
+
+        {% if data %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full table-auto border-collapse border border-gray-700">
+                <thead class="bg-gray-700">
+                    <tr>
+                        <th class="border border-gray-600 px-4 py-2 text-left">Timestamp</th>
+                        <th class="border border-gray-600 px-4 py-2 text-left">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for point in data %}
+                    <tr class="{% cycle 'bg-gray-800' 'bg-gray-700' %}">
+                        <td class="border border-gray-600 px-4 py-2">{{ point.Timestamp }}</td>
+                        <td class="border border-gray-600 px-4 py-2">{{ point.Average|default:point.Sum }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-gray-400">No data available</p>
+        {% endif %}
+    </section>
+    {% endfor %}
+
+</main>
+
+<footer class="bg-gray-800 p-4 text-center text-gray-400">
+    &copy; {{ now.year }} CloudWatch Dashboard
+</footer>
+
+</body>
+</html>

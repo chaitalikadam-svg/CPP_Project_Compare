@@ -3,7 +3,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 setuptools.setup(
     name="Ele_Product_compare_chaitali",
-    version="0.0.1",
+    version="0.0.2",
     author="Example Author",
     author_email="x24215449@nicrl.ie",
     description="A package which can compare 2 products",

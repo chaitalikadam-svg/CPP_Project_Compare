@@ -70,8 +70,7 @@
     </button>
   </form>
 
-  <!-- JavaScript -->
-  <script>
+ <script>
   document.addEventListener("DOMContentLoaded", function () {
     // Expose globally so inline onclick can call it
     window.competitor_prices = function(productId) {
@@ -83,9 +82,7 @@
         }
       })
       .then(response => response.text())
-      .then(html => {
-        resultsDiv.innerHTML = html;
-      })
+      .then(html => { resultsDiv.innerHTML = html; })
       .catch(error => {
         resultsDiv.innerHTML = `<p class="text-red-600">Error: ${error}</p>`;
       });
@@ -97,13 +94,13 @@
       return tokenInput ? tokenInput.value : "";
     }
 
-    // Enable compare button only when 2 products are selected
+    // Enable compare button only when 2 or 3 products are selected
     const checkboxes = document.querySelectorAll('input[name="product_ids"]');
     const compareButton = document.getElementById('compare-btn');
     checkboxes.forEach(cb => cb.addEventListener('change', () => {
       const selected = [...checkboxes].filter(c => c.checked).length;
-      compareButton.disabled = selected !== 2;
+      compareButton.disabled = !(selected === 2 || selected === 3);
     }));
   });
-  </script>
+</script>
 {% endblock %}

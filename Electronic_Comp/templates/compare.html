@@ -3,84 +3,80 @@
 {% block title %}Comparison{% endblock %}
 
 {% block content %}
-  <h1 class="text-3xl font-bold mb-6 text-center">
-    {{ category|title }} Product Comparison
-  </h1>
+<h1 class="text-3xl text-white font-bold mb-6 text-center">
+  Product Comparison
+</h1>
 
-  <div class="overflow-x-auto">
-    <table class="min-w-full border border-gray-300 rounded-lg shadow-md table-fixed">
-      <thead class="bg-gray-100">
-        <tr>
-          <th class="border px-4 py-2 text-left font-semibold text-gray-700 w-1/5">Attribute</th>
-          {% for product in products %}
-            <th class="border px-4 py-2 text-left font-semibold text-gray-700 w-2/5">
-              {{ product.name }}
-              <button type="button"
-                      onclick="competitor_prices({{ product.productid }})"
-                      class="mt-2 bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700 transition text-sm">
-                Show Competitor Prices
-              </button>
-              <div id="competitor_{{ product.productid }}" class="mt-2 text-sm"></div>
-            </th>
+<div class="overflow-x-auto">
+  <table class="min-w-full border border-gray-300 rounded-lg shadow-md table-fixed text-base">
+    <thead class="bg-gray-100 sticky top-0">
+      <tr>
+        <th class="border border-gray-300 px-4 py-2 text-center w-48">Attribute</th>
+        {% for product in products %}
+          <th class="border border-gray-300 px-4 py-2 text-center w-1/{{ products|length }}">{{ product.name }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for row in rows %}
+        {% with attr=row.attribute|default:''|lower %}
+        <tr class="{% cycle 'bg-white' 'bg-gray-50' %}">
+          <td class="border border-gray-300 px-4 py-2 font-semibold text-center align-top">{{ row.attribute }}</td>
+
+          {% for value in row.values %}
+            <td class="border border-gray-300 px-4 py-2 text-left align-top">
+
+              {# Specifications / Features #}
+              {% if attr in 'specifications features m' %}
+                {% if value %}
+                  <ul class="list-disc list-inside text-sm">
+                    {% for spec in value %}
+                      <li>{{ spec }}</li>
+                    {% endfor %}
+                  </ul>
+                {% else %}
+                  N/A
+                {% endif %}
+
+              {# Reviews #}
+              {% elif attr == 'reviews' %}
+                {% if value %}
+                  <ul class="list-disc list-inside italic text-gray-700 text-sm">
+                    {% for item in value %}
+                      <li>{{ item }}</li>
+                    {% endfor %}
+                  </ul>
+                {% else %}
+                  No reviews
+                {% endif %}
+
+              {# Other attributes #}
+              {% else %}
+                <span class="text-sm">{{ value|default:"N/A" }}</span>
+              {% endif %}
+
+            </td>
           {% endfor %}
         </tr>
-      </thead>
+        {% endwith %}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 
-      <tbody>
-        {% for row in rows %}
-          <tr class="{% cycle 'bg-white' 'bg-gray-50' %} hover:bg-indigo-50 transition">
-            <td class="border px-4 py-2 font-medium text-gray-800 w-1/5">{{ row.attribute }}</td>
-            {% for value in row.values %}
-              <td class="border px-4 py-2 text-gray-700 w-2/5">
-                {% if value %}
-                  {% if row.attribute == "Average Rating" %}
-                    {% for i in "12345"|slice:":value"|default:"" %}
-                      ⭐
-                    {% endfor %}
-                    <span class="ml-2 text-sm text-gray-500">({{ value }}/5)</span>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  window.competitor_prices = function(productId) {
+    const resultsDiv = document.getElementById("competitor_" + productId);
 
-                  {% elif row.attribute == "Reviews" %}
-                    <ul class="list-disc list-inside text-sm text-gray-600">
-                      {% for review in value %}
-                        <li>{{ review }}</li>
-                      {% endfor %}
-                    </ul>
-
-                  {% elif row.attribute == "Specifications" %}
-                    <ul class="list-disc list-inside text-sm text-gray-600">
-                      {% for spec in value %}
-                        <li>{{ spec }}</li>
-                      {% endfor %}
-                    </ul>
-
-                  {% else %}
-                    {{ value }}
-                  {% endif %}
-                {% else %}
-                  <span class="text-gray-400 italic">N/A</span>
-                {% endif %}
-              </td>
-            {% endfor %}
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-
-  <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    window.competitor_prices = function(productId) {
-      const resultsDiv = document.getElementById("competitor_" + productId);
-
-      fetch(`/competitor_prices/${productId}/`)
+    fetch(`/competitor_prices/${productId}/`)
       .then(response => response.text())
-      .then(html => {
-        resultsDiv.innerHTML = html;
-      })
+      .then(html => { resultsDiv.innerHTML = html; })
       .catch(error => {
         resultsDiv.innerHTML = `<p class="text-red-600">Error: ${error}</p>`;
       });
-    };
-  });
-  </script>
+  };
+});
+</script>
 {% endblock %}

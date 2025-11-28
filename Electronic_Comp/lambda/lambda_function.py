@@ -1,16 +1,14 @@
 import boto3
 import json
 
-# Initialize clients
+# Initialization
 sns = boto3.client("sns")
 cognito = boto3.client("cognito-idp")
 
-# Replace with your values
 USER_POOL_ID = "us-east-1_wSOb7NGER"
 TOPIC_ARN = "arn:aws:sns:us-east-1:882202387716:UserNotification"
 
 def lambda_handler(event, context):
-    # 1. Extract S3 info from event
     bucket = event['Records'][0]['s3']['bucket']['name']
     key = event['Records'][0]['s3']['object']['key']
     s3_path = f"s3://{bucket}/{key}"

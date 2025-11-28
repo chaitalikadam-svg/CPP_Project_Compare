@@ -20,46 +20,85 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from Electronic_Comp.s3_utils import get_presigned_image_url
-from LibProduct.compare_products import ProductComparator
+from Ele_Product_compare_chaitali import ProductComparator
 
 
+
+#Comparing 2 products by using Librarry
 def compare_products(request):
     if request.method == "POST":
         product_ids = request.POST.getlist("product_ids")
-        ids = [pid.split(":") for pid in product_ids]  # (category, productid)
+        ids = [pid.split(":") for pid in product_ids]
+
         comparator = ProductComparator(product_ids=ids)
         rows = comparator.compare_features()
-        
-        # Mapping dictionary
+
+        for row in rows:
+            #Handling for features
+            if row["attribute"] in ("features", "M"):   #Changing actual specs key
+                converted = []
+                for val in row["values"]:
+                    if isinstance(val, dict):
+                        pretty_list = [f"{k}: {v}" for k, v in val.items()]
+                        converted.append(pretty_list)
+                    else:
+                        converted.append(val)
+                row["values"] = converted
+                
+            if row["attribute"] == "reviews":
+                converted_reviews = []
+                for val in row["values"]:
+                    reviews_list = []
+            
+                    # Handle DynamoDB L → M structure
+                    if isinstance(val, dict) and "L" in val:
+                        for item in val["L"]:
+                            # Each item is {"M": {...}}
+                            review = item.get("M", {}).get("review")
+                            if review:
+                                reviews_list.append(review)
+            
+                    # Handle already normalized dicts
+                    elif isinstance(val, dict) and "review" in val:
+                        reviews_list.append(val["review"])
+            
+                    # Handle plain strings
+                    elif isinstance(val, str):
+                        reviews_list.append(val)
+            
+                    converted_reviews.append(reviews_list)
+            
+                row["values"] = converted_reviews
+
+
+    
+        #Replace attribute keys with user-friendly labels
         ATTRIBUTE_LABELS = {
             "brand": "Company",
             "model": "Version",
             "category": "Type",
             "name": "Product Name",
-            "M" : "Features",
-            "image_s3_key" : "Image Name",
-            "price" : "Price",
-            "productid" : "Product ID",
-            "review" : "Reviews",
-            "rating" : "Average Rating",
-            "features": "Specifications",
-            "specscoreoutof100" : "Spec Score",
-            "warranty" : "Warranty",
-            "weightkg" : "Weight (in kg)"
+            "image_s3_key": "Image Name",
+            "price": "Price in Euro",
+            "productid": "Product ID",
+            "reviews": "Reviews",
+            "rating": "Average Rating",
+            "specscoreoutof100": "Spec Score out of 100",
+            "weightkg": "Weight (kg)",
+            "warranty": "Warranty (year)",
+            "M": "Specifications"   
         }
-    
-        # ✅ Replace raw attribute names with friendly labels
+
         for row in rows:
             if row["attribute"] in ATTRIBUTE_LABELS:
                 row["attribute"] = ATTRIBUTE_LABELS[row["attribute"]]
-                
-        
+
         return render(request, "compare.html", {
             "rows": rows,
             "products": comparator.products
         })
 
-        
+
         
 AWS_REGION = 'us-east-1'
 USER_POOL_ID = 'us-east-1_wSOb7NGER'
@@ -67,8 +106,7 @@ CLIENT_ID = '4qeivq54fhf5dlki919mqnvvo1'
 cognito = boto3.client("cognito-idp", region_name=settings.AWS_REGION)
 
 
-# 1. SIGNUP - user enters: username, email, password
-# ---------------------------
+#SIGNUP 
 def signup_view(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -104,7 +142,7 @@ def signup_view(request):
 
     return render(request, "signup.html")  # show signup form
 
-
+#VERIFICATION CODE
 def verify_view(request, email):
     if request.method == "POST":
         code = request.POST.get("code")
@@ -134,7 +172,7 @@ def verify_view(request, email):
 
     return render(request, "verify.html", {"email": email})
 
-
+#RESENDING CODE
 def resend_code_view(request, email):
     try:
         cognito.resend_confirmation_code(
@@ -147,6 +185,7 @@ def resend_code_view(request, email):
 
     return redirect("verify", email=email)
 
+#SIGNIN
 def signin_view(request):
     if request.method == "POST":
         email = request.POST.get("email")
@@ -202,14 +241,16 @@ def signin_view(request):
 
     return render(request, "signin.html")
 
-    
+#LOGOUT
 def logout_view(request):
     request.session.flush()
     return redirect("signup")
     
+#HOMEPAGE
 def display_view(request):
     return render(request, "display.html")
 
+#PRODUCT VIEW to show data and image
 def mobile_view(request):
     dynamodb = boto3.resource("dynamodb", region_name="us-east-1")
     table = dynamodb.Table("ElectronicItem")
@@ -249,8 +290,7 @@ def mobile_view(request):
         "products": products,
     })
 
-
-
+#searching API data
 def serpapi_search_view(request, product_name):
     # Connect to DynamoDB
     dynamodb = boto3.resource("dynamodb", region_name="us-east-1")
@@ -305,6 +345,7 @@ def serpapi_search_view(request, product_name):
             "error": f"API error: {e}",
         })
 
+
 def competitor_prices(request, productid):
     try:
         raw = fetch_google_shopping(productid)
@@ -313,7 +354,6 @@ def competitor_prices(request, productid):
     except Exception as e:
         return render(request, "competitor_prices.html", {"error": str(e)})
         
-
 def add_product_view(request):
     AWS_REGION = "us-east-1"
     BUCKET_NAME = "chaitalibucket1001"
@@ -641,9 +681,8 @@ def add_review(request, category, productid):
 
     return redirect("review_page")
     
-    
 def search_products(request):
-    query = request.GET.get("q", "").lower()   # convert search term to lowercase
+    query = request.GET.get("q", "").lower()
     dynamodb = boto3.resource("dynamodb", region_name="us-east-1")
     table = dynamodb.Table("ElectronicItem")
     response = table.scan()
@@ -651,12 +690,11 @@ def search_products(request):
 
     results = []
     for item in items:
-        name = item.get("name", "").lower()
-        brand = item.get("brand", "").lower()
-        model = item.get("model", "").lower()
-        features = " ".join(item.get("features", {}).values()).lower()
+        name = str(item.get("name", "")).lower()
+        brand = str(item.get("brand", "")).lower()
+        model = str(item.get("model", "")).lower()
+        features = " ".join(item.get("features", {}).values()).lower() if item.get("features") else ""
 
-        # ✅ check case-insensitive match
         if query in name or query in brand or query in model or query in features:
             results.append({
                 "name": item.get("name"),
@@ -664,8 +702,11 @@ def search_products(request):
                 "brand": item.get("brand"),
                 "model": item.get("model"),
                 "image_url": item.get("image_url", ""),
-                "features": item.get("features", {})
+                "features": list(item.get("features", {}).values())  # ✅ list for template join
             })
 
     return render(request, "search_products.html", {"results": results, "query": query})
     
+def cloudwatch_view(self, request):
+        metrics = get_cloudwatch_metrics()
+        return render(request, "monitor.html", {"metrics": metrics})

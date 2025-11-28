@@ -2,7 +2,7 @@
 {% block title %}Product Reviews{% endblock %}
 
 {% block content %}
-  <h1 class="text-2xl font-bold mb-6">All Products with Reviews</h1>
+  <h1 class="text-2xl font-bold mb-6 text-center text-white">All Products with Reviews</h1>
 
   <!-- Smaller block height -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-[20rem]">
@@ -22,14 +22,14 @@
 
         <!-- Hidden Review Form -->
         <div id="form_{{ product.productid }}" class="hidden mt-3">
-          <form method="post" action="{% url 'add_review' product.category product.productid %}" class="space-y-3">
+          <form method="post" action="{% url 'add_review' product.category product.productid %}" class="space-y-3 bg-gray-200">
             {% csrf_token %}
             
 
             <div>
               <label class="block text-sm font-medium text-gray-700">Rating</label>
               <select name="rating" required
-                      class="mt-1 w-full rounded border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
+                      class="mt-1 w-full rounded border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 bg-gray-200">
                 <option value="1">⭐</option>
                 <option value="2">⭐⭐</option>
                 <option value="3">⭐⭐⭐</option>
@@ -41,7 +41,7 @@
             <div>
               <label class="block text-sm font-medium text-gray-700">Review</label>
               <textarea name="review_text" required rows="3"
-                        class="mt-1 w-full rounded border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"></textarea>
+                        class="mt-1 w-full rounded border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 bg-gray-200"></textarea>
             </div>
 
             <button type="submit"
