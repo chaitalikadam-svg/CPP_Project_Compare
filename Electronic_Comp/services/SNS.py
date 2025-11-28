@@ -1,7 +1,8 @@
 import boto3
-
+from django.conf import settings
 # Create SNS client
-sns = boto3.client('sns')
+
+sns = boto3.client('sns', region_name=settings.AWS_REGION)
 
 def notify_user_verified(email):
     #Creating SNS topic for admin 
