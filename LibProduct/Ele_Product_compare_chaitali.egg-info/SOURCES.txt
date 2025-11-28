@@ -1,0 +1,7 @@
+README.md
+setup.py
+Ele_Product_compare_chaitali.egg-info/PKG-INFO
+Ele_Product_compare_chaitali.egg-info/SOURCES.txt
+Ele_Product_compare_chaitali.egg-info/dependency_links.txt
+Ele_Product_compare_chaitali.egg-info/requires.txt
+Ele_Product_compare_chaitali.egg-info/top_level.txt

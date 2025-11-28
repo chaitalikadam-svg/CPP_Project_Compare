@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-xq5cbdnoekix$&!7xm@ps(e1((qzdbr%ud8)9gp0ui@xn*6i(-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['30c88d8a912c46a888ecb41e6a40ce0f.vfs.cloud9.us-east-1.amazonaws.com']
+ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.vfs.cloud9.us-east-1.amazonaws.com",
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Electronic_Comp',
+    
 ]
 
 MIDDLEWARE = [
@@ -120,10 +121,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'static'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-SERPAPI_KEY = "6f12b45589d765b802fb94419d4ee642698038bb652d4be005b3e4320f0427e0"
+SERPAPI_KEY = "81fdcb49baf65ad85a2eb8587eedde9fd65089618a7ec8e3555de5cb0963b520"

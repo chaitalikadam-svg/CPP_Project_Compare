@@ -5,7 +5,7 @@ client = boto3.client('cognito-idp', region_name  = 'us-east-1')
 
 # Creating a User Pool
 user_pool_response  = client.create_user_pool(
-    PoolName  = 'ElectronicProductCompare',
+    PoolName  = 'ElectronicProductCompareApp',
     Policies = {
         'PasswordPolicy':{
             'MinimumLength': 8,
@@ -15,7 +15,10 @@ user_pool_response  = client.create_user_pool(
             'RequireSymbols':False
         }
     },
-    AutoVerifiedAttributes = ['email']
+    AutoVerifiedAttributes = ['email'],
+    EmailConfiguration={
+        "EmailSendingAccount": "COGNITO_DEFAULT"
+    }
     )
 user_pool_id = user_pool_response['UserPool']['Id']
 print(f"User Pool created: {user_pool_id}")

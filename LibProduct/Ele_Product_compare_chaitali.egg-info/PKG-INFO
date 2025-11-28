@@ -1,0 +1,26 @@
+Metadata-Version: 2.4
+Name: Ele_Product_compare_chaitali
+Version: 0.0.1
+Summary: A package which can compare 2 products
+Home-page: https://github.com/pypa/sampleproject
+Author: Example Author
+Author-email: x24215449@nicrl.ie
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: boto3
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+This Python library designed to help users **compare electronic products** such as mobiles, laptops, TVs, and more.  
+It provides tools to fetch product details, display comparisons side‑by‑side.
+

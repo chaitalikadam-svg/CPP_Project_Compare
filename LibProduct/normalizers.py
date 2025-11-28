@@ -1,4 +1,3 @@
-# comparator_pkg/normalizers.py
 
 def normalize_features(features: dict) -> dict:
     """Standardize feature keys and values."""

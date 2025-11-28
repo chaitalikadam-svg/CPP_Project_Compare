@@ -95,7 +95,7 @@ def upload_file(file_name, bucket, object_key=None):
     return True
     
     
-'''
+
 def delete_object(region, bucket_name, object_key):
     """Delete a given object from an S3 bucket
     """
@@ -103,7 +103,7 @@ def delete_object(region, bucket_name, object_key):
     response = s3_client.delete_object(Bucket=bucket_name, Key=object_key)
     
 
-
+'''
 def delete_bucket(region, bucket_name):
     """Delete a given S3 bucket
     """

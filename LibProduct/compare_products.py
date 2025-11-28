@@ -9,21 +9,21 @@ class ProductComparator:
             self.products = fetch_products_by_ids(table_name, product_ids, region)
         else:
             self.products = []
-
+    
     def compare_features(self):
-        """Return side-by-side comparison of product features."""
-        all_features = set()
+        """Compare all attributes across products, including merged features."""
+        all_keys = set()
         for product in self.products:
-            all_features.update(product.get("features", {}).keys())
+            all_keys.update(product.keys())
 
         rows = []
-        for feature in sorted(all_features):
-            row = {"feature": feature, "values": []}
+        for key in sorted(all_keys):
+            row = {"attribute": key, "values": []}
             for product in self.products:
-                row["values"].append(product.get("features", {}).get(feature, "N/A"))
+                row["values"].append(product.get(key, "N/A"))
             rows.append(row)
         return rows
-
+    
     def competitor_prices(self):
         """Fetch competitor prices for each product."""
         data = {}

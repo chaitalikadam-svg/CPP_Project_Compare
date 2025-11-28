@@ -1,5 +1,3 @@
-{% block title %}Competitor Prices{% endblock %}
-
 {% block content %}
 
 {% if prices %}
@@ -10,7 +8,7 @@
         <th class="px-3 py-2 text-left">Title</th>
         <th class="px-3 py-2 text-left">Price</th>
         <th class="px-3 py-2 text-left">Source</th>
-        <th class="px-3 py-2 text-left">Link</th>
+        <th class="px-3 py-2 text-left">Rating</th>
       </tr>
     </thead>
     <tbody>
@@ -19,9 +17,7 @@
           <td class="border px-3 py-2">{{ item.title }}</td>
           <td class="border px-3 py-2">{{ item.price }}</td>
           <td class="border px-3 py-2">{{ item.source }}</td>
-          <td class="border px-3 py-2">
-            <a href="{{ item.link }}" target="_blank" class="text-indigo-600 hover:underline">View</a>
-          </td>
+          <td class="border px-3 py-2">{{ item.rating }}</td>
         </tr>
       {% endfor %}
     </tbody>
@@ -29,5 +25,4 @@
 {% else %}
   <p class="text-gray-500">No competitor prices available.</p>
 {% endif %}
-'
 {% endblock %}

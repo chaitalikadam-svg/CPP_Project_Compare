@@ -1,0 +1,35 @@
+{% extends 'display.html' %}
+
+{% block title %}Mobile{% endblock %}
+
+{% block content %}
+<div class="p-6 bg-white rounded-lg shadow-md">
+  <h2 class="text-xl font-bold mb-4">Search Results for "{{ query }}"</h2>
+
+  {% if results %}
+    <ul class="space-y-4">
+      {% for product in results %}
+        <li class="flex justify-between items-center border-b pb-4">
+          <div>
+            <h3 class="text-lg font-semibold">{{ product.name }}</h3>
+            <p class="text-sm text-gray-600">Category: {{ product.category }}</p>
+            <p class="text-sm text-gray-600">Brand: {{ product.brand }}</p>
+            <p class="text-sm text-gray-600">Model: {{ product.model }}</p>
+            <p class="text-sm text-gray-500">
+              Features: {{ product.features|join:", " }}
+            </p>
+          </div>
+          {% if product.image_url %}
+            <div class="w-48 h-48 flex-shrink-0 overflow-hidden bg-white border rounded">
+              <img src="{{ product.image_url }}" alt="{{ product.name }}"
+                   class="w-full h-full object-cover" loading="lazy" />
+            </div>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-gray-500">No products matched your search.</p>
+  {% endif %}
+</div>
+{% endblock %}

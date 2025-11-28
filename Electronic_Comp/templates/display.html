@@ -1,34 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>{% block title %}Display the content{% endblock %}</title>
+    <title>{% block title %}TechieVS{% endblock %}</title>
 </head>
-<body class="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 min-h-screen text-gray-900">
+<body class="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 min-h-screen text-gray-900 flex flex-col">
 
 <!-- Navbar -->
-<nav class="bg-gray-900 px-6 py-4 text-white shadow-lg flex justify-between items-center">
-  <h1 class="text-xl font-bold tracking-wide">CPP Project</h1>
+<nav class="sticky top-0 z-50 bg-gray-900 px-6 py-4 text-white shadow-lg flex justify-between items-center">
+  <h1 class="text-xl font-bold tracking-wide">TechieVS — "Compare. Decide. Win.”</h1>
+  
+  <!-- Search Bar -->
+  <form action="{% url 'search_products' %}" method="get" class="flex items-center space-x-2">
+    <input type="text" name="q" placeholder="Search products..."
+           class="w-96 px-4 py-2 rounded-md text-black text-lg focus:outline-none shadow-inner">
+    <button type="submit" class="bg-yellow-400 px-5 py-2 rounded-md text-black font-semibold hover:bg-yellow-500 transition">
+      Search
+    </button>
+  </form>
+
+  <!-- Navigation Links -->
   <div class="space-x-6">
-    <a href="{% url 'mobile_view' %}?category=mobile" class="hover:text-yellow-400 transition">Mobile</a>
-    <a href="{% url 'mobile_view' %}?category=laptop" class="hover:text-yellow-400 transition">Laptop</a>
-    <a href="{% url 'mobile_view' %}?category=tv" class="hover:text-yellow-400 transition">TV</a>
-    <a href="{% url 'mobile_view' %}?category=induction%20top" class="hover:text-yellow-400 transition">Induction Top</a>
-    <a href="{% url 'mobile_view' %}?category=heaters" class="hover:text-yellow-400 transition">Heaters</a>
-    <a href="{% url 'logout_view' %}" class="hover:text-yellow-400 transition">Logout</a>
+    <a href="{% url 'mobile_view' %}?category=mobile" class="font-bold hover:text-yellow-400 transition">Mobile</a>
+    <a href="{% url 'mobile_view' %}?category=laptop" class="font-bold hover:text-yellow-400 transition">Laptop</a>
+    <a href="{% url 'mobile_view' %}?category=tv" class="font-bold hover:text-yellow-400 transition">TV</a>
+    <a href="{% url 'mobile_view' %}?category=induction%20top" class="font-bold hover:text-yellow-400 transition">Induction Top</a>
+    <a href="{% url 'mobile_view' %}?category=heaters" class="font-bold hover:text-yellow-400 transition">Heaters</a>
+    <a href="{% url 'review_page' %}" class="font-bold hover:text-yellow-400 transition">Review</a>
+    <a href="{% url 'logout_view' %}" class="font-bold hover:text-yellow-400 transition">Logout</a>
   </div>
 </nav>
 
+<!-- Hero Section with Background Visual -->
+<section class="relative flex flex-col items-center justify-center text-center text-white py-20 bg-cover bg-center"
+         style="background-image: url('/static/images/tech-bg.jpg');">
+  <div class="absolute inset-0 bg-black/40"></div> <!-- overlay for readability -->
+  <div class="relative z-10">
+    <h2 class="text-5xl font-extrabold mb-4 drop-shadow-lg">Welcome to TechieVS</h2>
+    <p class="text-lg max-w-2xl mb-8">
+      Compare products side by side, explore reviews, and make smarter buying decisions.
+    </p>
+  </div>
+</section>
+
 <!-- Main Content -->
-<main class="p-8">
-  <div class="bg-white/90 backdrop-blur-md shadow-2xl rounded-xl p-10">
+<main class="flex-grow p-8">
     {% block content %}
     <!-- Child templates inject content here -->
     {% endblock %}
-  </div>
 </main>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-white text-center py-6 mt-10">
+  <p class="text-sm">&copy; 2025 TechieVS. All rights reserved.</p>
+</footer>
 
 </body>
 </html>

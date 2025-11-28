@@ -4,7 +4,7 @@ from django.conf import settings
 def fetch_google_shopping(query):
     url = "https://serpapi.com/search.json"
     params = {
-        "engine": "google_shopping",
+        "engine": "google_shopping_light",
         "q": query,
         "location": "United Kingdom", 
         "google_domain": "google.com",
@@ -23,7 +23,6 @@ def normalize_products(data):
             "title": item.get("title"),
             "price": item.get("price"),
             "source": item.get("source"),
-            "link": item.get("link"),
-            "thumbnail": item.get("thumbnail"),
+            "rating": item.get("rating"),
         })
     return products

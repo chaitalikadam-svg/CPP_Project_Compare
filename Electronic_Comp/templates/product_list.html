@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product List</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500">
+
+  <!-- Navbar -->
+  <nav class="bg-gray-900 text-white px-6 py-4 flex justify-between items-center shadow-lg">
+    <div class="text-xl font-bold">TechieVS (Admin)</div>
+    <div class="flex gap-6">
+      <a href="{% url 'add_product' %}" class="hover:text-yellow-400 transition">Add Product</a>
+      <a href="{% url 'product_list' %}" class="hover:text-yellow-400 transition">List Product</a>
+      <a href="{% url 'logout' %}" class="hover:text-yellow-400 transition">Logout</a>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="py-10 px-6">
+    <h1 class="text-4xl font-extrabold text-center text-white mb-10">All Products</h1>
+
+    <!-- Success/Error Messages -->
+    {% if messages %}
+      <div class="mb-6">
+        {% for msg in messages %}
+          <p class="text-center font-semibold 
+            {% if msg.tags == 'success' %} text-green-200 {% else %} text-red-200 {% endif %}">
+            {{ msg }}
+          </p>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Product Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {% for p in products %}
+        <div class="bg-white/90 backdrop-blur-md shadow-xl rounded-xl p-6">
+          <h3 class="text-xl font-bold text-gray-900 mb-2">{{ p.name }}</h3>
+          <p class="text-sm text-gray-700"><strong>ID:</strong> {{ p.productid }}</p>
+          <p class="text-sm text-gray-700"><strong>Category:</strong> {{ p.category }}</p>
+          <p class="text-sm text-gray-700"><strong>Image Key:</strong> {{ p.image_s3_key }}</p>
+
+          <div class="mt-4">
+            <p class="text-sm font-semibold text-gray-800">Features:</p>
+            <pre class="bg-gray-100 rounded-lg p-3 text-sm text-gray-700 whitespace-pre-wrap">{{ p.features|safe }}</pre>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex gap-4 mt-6">
+            <a href="{% url 'edit_product' p.category p.productid %}" 
+               class="flex-1 text-center bg-indigo-600 text-white py-2 rounded-lg shadow-md hover:bg-indigo-700 transition">
+              Edit
+            </a>
+            <form method="post" action="{% url 'delete_product' p.category p.productid %}" class="flex-1"
+                  onsubmit="return confirm('Delete this product?');">
+              {% csrf_token %}
+              <button type="submit" 
+                      class="w-full bg-red-600 text-white py-2 rounded-lg shadow-md hover:bg-red-700 transition">
+                Delete
+              </button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>

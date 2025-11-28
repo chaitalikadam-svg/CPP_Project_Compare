@@ -15,35 +15,41 @@
       Sign In
     </h2>
 
+    <!-- Messages -->
+    {% if messages %}
+      <div class="mb-4">
+        {% for msg in messages %}
+          <p class="text-red-600 font-semibold">{{ msg }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+
     <!-- Form -->
-    <form method="POST" action="{% url 'signin' %}" class="space-y-6">
+    <form method="POST" class="space-y-6">
       {% csrf_token %}
 
       <!-- Email -->
-      
-    {% if error %}
-      <div class="text-red-600 font-semibold mb-4">
-        {{ error }}
-      </div>
-    {% endif %}
-      
       <div>
         <label class="block text-sm font-semibold text-gray-700">Email</label>
-        <input type="email" name="email" required
-          class="mt-2 w-full rounded-lg border border-gray-300 px-4 py-2 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none"/>
+        <input type="email" name="email" placeholder="Email" required
+          class="mt-2 w-full rounded-lg border border-gray-300 px-4 py-2 shadow-sm 
+                 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none"/>
       </div>
 
       <!-- Password -->
       <div>
         <label class="block text-sm font-semibold text-gray-700">Password</label>
-        <input type="password" name="password" required
-          class="mt-2 w-full rounded-lg border border-gray-300 px-4 py-2 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none"/>
+        <input type="password" name="password" placeholder="Password" required
+          class="mt-2 w-full rounded-lg border border-gray-300 px-4 py-2 shadow-sm 
+                 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none"/>
       </div>
 
       <!-- Submit Button -->
       <div>
         <button type="submit"
-          class="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-semibold py-3 px-4 rounded-lg shadow-md hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition">
+          class="w-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 
+                 text-white font-semibold py-3 px-4 rounded-lg shadow-md 
+                 hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition">
           Sign In
         </button>
       </div>

@@ -5,7 +5,7 @@ from decimal import Decimal
 
 class DynamoDBDemo:
     
-    
+    #Create table in db
     def create_table(self, table_name, key_schema, attribute_definitions, provisioned_throughput, region):
         
         try:
@@ -21,7 +21,7 @@ class DynamoDBDemo:
             return False
         return True
         
-
+    #Store data in db
     def store_an_item(self, region, table_name, item):
         try:
             dynamodb_resource = boto3.resource("dynamodb", region_name = "us-east-1")
@@ -34,7 +34,7 @@ class DynamoDBDemo:
         return True
         
         
-     
+    #Retrive data from db
     def get_an_item(self,region, table_name, key):
         try:
             dynamodb_resource = boto3.resource("dynamodb", region_name = "us-east-1")
@@ -109,9 +109,24 @@ def main():
             "Face ID" : "Yes",
             "USB-C" : "Yes",
             "Refresh Rate" : "120Hz"
-	    }
+	    },
+    	"reviews": [
+        {
+            "userid": "c4881468-30d1-7091-a5ea-6c60f17bd89c",
+            "username": "chaitalikadam25@gmail.com",
+            "rating": 5,
+            "review": "Great product!",
+            "created_at": "2025-11-25T11:40:00Z"
+        },
+        {
+            "userid": "14482418-d001-7022-1bc6-b30a901bdea3",
+            "username": "Alex",
+            "rating": 4,
+            "review": "Good value for money",
+            "created_at": "2025-11-25T11:45:00Z"
+        }
+    ]
     }
-    
     d.store_an_item(region, table_name, item)
     
     
