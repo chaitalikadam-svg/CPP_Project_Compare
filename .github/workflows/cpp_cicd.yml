@@ -1,4 +1,3 @@
-
 name: Electronic_Product Deploy
 
 on:
@@ -35,13 +34,13 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      - name: Initialize EB CLI with existing app
+        run: |
+          eb init Electronic_Comp --region ${{ secrets.AWS_REGION }} --platform "Python 3.9"
+          eb use cppproject
+
       - name: Deploy to Elastic Beanstalk
         run: |
-
-          eb init ${{ secrets.EB_APP_NAME }} \
-            --region ${{ secrets.AWS_REGION }} \
-            --platform "Python 3.9 running on 64bit Amazon Linux 2023"
-
-          eb deploy ${{ secrets.EB_ENV_NAME }} \
+          eb deploy \
             --label "deploy-${{ github.run_id }}" \
             --timeout 20
