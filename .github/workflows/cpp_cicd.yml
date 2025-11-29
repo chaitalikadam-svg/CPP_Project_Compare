@@ -1,0 +1,23 @@
+name: CPP Electronic Compare
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    types: [closed]
+    branches: ["master"]
+jobs:
+  deploy:
+    if: github.event.pull_request.merged == true || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Deploy to Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: "Electronic_Comp"
+          environment_name: "cppproject"
+          version_label: ${{ github.sha }}
+          region: "us-east-1"
