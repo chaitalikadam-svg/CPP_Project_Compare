@@ -1,4 +1,4 @@
-name: CPP Electronic Compare
+name: Deploy to Elastic Beanstalk
 
 on:
   push:
@@ -13,19 +13,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout repo
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Step 2: Set up Python (same version as EB platform)
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
+      # Step 3: Install EB CLI
       - name: Install EB CLI
         run: |
           python -m pip install --upgrade pip
           pip install awsebcli
 
+      # Step 4: Configure AWS credentials
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -34,9 +38,10 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: us-east-1
 
+      # Step 5: Deploy to Elastic Beanstalk
       - name: Deploy to Elastic Beanstalk
         run: |
-          cd CPP_Project_Compare-main/CPP_Project_Compare-main
+          working-directory: CPP_Project_Compare-main
           eb init ${{ secrets.EB_APP_NAME }} \
             --region ${{ secrets.AWS_REGION }} \
             --platform "Python 3.9 running on 64bit Amazon Linux 2023"
