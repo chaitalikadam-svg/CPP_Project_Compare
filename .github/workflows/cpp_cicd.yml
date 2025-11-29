@@ -42,6 +42,6 @@ jobs:
       # Step 5: Deploy to Elastic Beanstalk
       - name: Deploy to Elastic Beanstalk
         run: |
-          eb deploy "${{ secrets.EB_ENV_NAME }}" \
+          eb deploy cppproject\
             --label "deploy-${{ github.run_id }}" \
             --timeout 20
