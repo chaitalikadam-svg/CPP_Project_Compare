@@ -36,7 +36,9 @@ jobs:
 
       - name: Initialize EB CLI with existing app
         run: |
-          eb init Electronic_Comp --region ${{ secrets.AWS_REGION }} --platform "Python 3.9"
+          # Automatically select the first existing application (Electronic_Comp)
+          printf "1\n" | eb init --region ${{ secrets.AWS_REGION }} --platform "Python 3.9" --interactive
+          # Select the existing environment
           eb use cppproject
 
       - name: Deploy to Elastic Beanstalk
