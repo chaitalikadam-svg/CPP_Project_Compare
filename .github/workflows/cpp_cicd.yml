@@ -39,15 +39,13 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # Step 5 (NEW): Debug to find actual folder paths
-      - name: Show directory structure
-        run: |
-          pwd
-          ls -R .
-
-      # Step 6: Deploy to Elastic Beanstalk
+      # Step 5: Deploy to Elastic Beanstalk
       - name: Deploy to Elastic Beanstalk
-        working-directory: ???   # (I will fix this once you send the output)
         run: |
-          eb init ...
-          eb deploy ...
+          eb init "${{ secrets.EB_APP_NAME }}" \
+            --region "${{ secrets.AWS_REGION }}" \
+            --platform "Python 3.9 running on 64bit Amazon Linux 2023"
+
+          eb deploy "${{ secrets.EB_ENV_NAME }}" \
+            --label "deploy-${{ github.run_id }}" \
+            --timeout 20
