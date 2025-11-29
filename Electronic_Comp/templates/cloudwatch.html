@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CloudWatch Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500">
+      <!-- Navbar -->
+  <nav class="bg-gray-900 text-white px-6 py-4 flex justify-between items-center shadow-lg">
+    <div class="text-xl font-bold">TechieVS (Admin)</div>
+    <div class="flex gap-6">
+      <a href="{% url 'add_product' %}" class="hover:text-yellow-400 transition">Add Product</a>
+      <a href="{% url 'product_list' %}" class="hover:text-yellow-400 transition">List Product</a>
+      <a href="{% url 'logout' %}" class="hover:text-yellow-400 transition">Logout</a>
+    </div>
+  </nav>
+  
+  <div class="container mx-auto p-6">
+    <h1 class="text-4xl font-bold text-center mb-8 text-white">AWS CloudWatch Dashboard</h1>
+    <div class="grid grid-cols-2 gap-6">
+      
+      <!-- S3 Bar Chart -->
+      <div class="bg-white p-4 rounded shadow">
+        <h2 class="text-xl font-semibold mb-2">S3 Objects</h2>
+        <canvas id="s3Chart"></canvas>
+      </div>
+      
+      <!-- DynamoDB Line Chart -->
+      <div class="bg-white p-4 rounded shadow">
+        <h2 class="text-xl font-semibold mb-2">DynamoDB Read Capacity</h2>
+        <canvas id="dynamodbChart"></canvas>
+      </div>
+      
+      <!-- SNS Single Value -->
+      <div class="bg-white p-4 rounded shadow flex flex-col justify-center items-center">
+        <h2 class="text-xl font-semibold mb-2">SNS Messages Published</h2>
+        <p class="text-4xl font-bold text-blue-600">{{ sns.values|last|default:"0" }}</p>
+      </div>
+    </div>
+  </div>
+
+<script>
+  /* global Chart */
+
+  // S3 Bar Chart
+  new Chart(document.getElementById('s3Chart'), {
+    type: 'bar',
+    data: {
+      labels: {{ s3_timestamps|safe }},
+      datasets: [{
+        label: 'Number of Objects',
+        data: {{ s3_values|safe }},
+        backgroundColor: 'rgba(59, 130, 246, 0.7)'
+      }]
+    }
+  });
+
+  // DynamoDB Line Chart
+  new Chart(document.getElementById('dynamodbChart'), {
+    type: 'line',
+    data: {
+      labels: {{ dynamodb_timestamps|safe }},
+      datasets: [{
+        label: 'Read Capacity Units',
+        data: {{ dynamodb_values|safe }},
+        borderColor: 'rgba(16, 185, 129, 0.8)',
+        tension: 0.1
+      }]
+    }
+  });
+
+  // SNS Single Value
+  document.querySelector('#snsValue').textContent = {{ sns_values|safe }}.slice(-1)[0] || 0;
+</script>
+</html>

@@ -5,7 +5,7 @@
   <title>Delete Product</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-red-600 via-pink-600 to-purple-600">
+<body class="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500">
 
   <!-- Navbar -->
   <nav class="bg-gray-900 text-white px-6 py-4 flex justify-between items-center shadow-lg">
@@ -13,6 +13,7 @@
     <div class="flex gap-6">
       <a href="{% url 'add_product' %}" class="hover:text-yellow-400 transition">Add Product</a>
       <a href="{% url 'product_list' %}" class="hover:text-yellow-400 transition">List Product</a>
+      <a href="{% url 'cloudwatch' %}" class="hover:text-yellow-400 transition">Monitor</a>
       <a href="{% url 'logout' %}" class="hover:text-yellow-400 transition">Logout</a>
     </div>
   </nav>

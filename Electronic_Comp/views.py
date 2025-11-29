@@ -6,6 +6,7 @@ import json
 import uuid
 import jwt
 from jwt.algorithms import RSAAlgorithm
+from datetime import datetime, timedelta
 from django.shortcuts import render, redirect,  get_object_or_404
 from botocore.exceptions import ClientError
 from django.http import HttpResponse
@@ -13,6 +14,7 @@ from boto3.dynamodb.conditions import Attr # helps to build a filter expression 
 from .services.serpapi import normalize_products, fetch_google_shopping
 from .services.SNS import notify_user_verified
 from .services.create_bucket import delete_object
+#from .services.create_cloudwatch import CloudWatchMetrics
 from boto3.dynamodb.conditions import Key
 from decimal import Decimal
 from django.shortcuts import render, redirect
@@ -706,7 +708,44 @@ def search_products(request):
             })
 
     return render(request, "search_products.html", {"results": results, "query": query})
-    
-def cloudwatch_view(self, request):
-        metrics = get_cloudwatch_metrics()
-        return render(request, "monitor.html", {"metrics": metrics})
+
+def cloudwatch_dashboard(request):
+    cw = boto3.client("cloudwatch", region_name="us-east-1")
+
+    end_time = datetime.utcnow()
+    start_time = end_time - timedelta(days=7)
+    period = 3600
+
+    def get_metric(namespace, metric_name, dimensions, stat="Average"):
+        resp = cw.get_metric_statistics(
+            Namespace=namespace,
+            MetricName=metric_name,
+            Dimensions=dimensions,
+            StartTime=start_time,
+            EndTime=end_time,
+            Period=period,
+            Statistics=[stat]
+        )
+        datapoints = sorted(resp.get("Datapoints", []), key=lambda x: x["Timestamp"])
+        timestamps = [dp["Timestamp"].strftime("%H:%M") for dp in datapoints]
+        values = [dp[stat] for dp in datapoints]
+        return {"timestamps": timestamps, "values": values}
+
+    s3_metrics = get_metric("AWS/S3", "NumberOfObjects",
+        [{"Name": "BucketName", "Value": "chaitalibucket1001"},
+         {"Name": "StorageType", "Value": "AllStorageTypes"}])
+
+    dynamodb_metrics = get_metric("AWS/DynamoDB", "ConsumedReadCapacityUnits",
+        [{"Name": "TableName", "Value": "ElectronicItem"}], stat="Sum")
+
+    sns_metrics = get_metric("AWS/SNS", "NumberOfMessagesPublished",
+        [{"Name": "TopicName", "Value": "UserNotification"}], stat="Sum")
+
+    context = {
+        "s3_timestamps": json.dumps(s3_metrics["timestamps"]),
+        "s3_values": json.dumps(s3_metrics["values"]),
+        "dynamodb_timestamps": json.dumps(dynamodb_metrics["timestamps"]),
+        "dynamodb_values": json.dumps(dynamodb_metrics["values"]),
+        "sns_values": json.dumps(sns_metrics["values"])
+    }
+    return render(request, "cloudwatch.html", context)
