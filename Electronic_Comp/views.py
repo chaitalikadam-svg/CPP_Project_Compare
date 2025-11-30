@@ -22,7 +22,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from Electronic_Comp.s3_utils import get_presigned_image_url
 from Ele_Product_compare_chaitali.compare_products import ProductComparator
-#from .compare_products import ProductComparator
 
 
 

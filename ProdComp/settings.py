@@ -25,7 +25,7 @@ AWS_REGION = os.environ.get('AWS_REGION', 'us-east-1')  # default if not set
 SECRET_KEY = 'django-insecure-xq5cbdnoekix$&!7xm@ps(e1((qzdbr%ud8)9gp0ui@xn*6i(-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
