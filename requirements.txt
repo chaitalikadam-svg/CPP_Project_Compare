@@ -9,4 +9,4 @@ asgiref==3.11.0
 pytz==2022.7.1
 PyJWT==2.10.1        
 cryptography==36.0.1 
-Ele-Product-compare-chaitali==0.0.2
+Ele-Product-compare-chaitali==0.2.0
