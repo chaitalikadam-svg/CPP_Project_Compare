@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV=/home/ec2-user/environment/CPP_Project/venv
+VIRTUAL_ENV=/home/ec2-user/environment/CPP_Project_Compare-main/CPP_Project_Compare-main/venv
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

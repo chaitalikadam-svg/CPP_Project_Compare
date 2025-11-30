@@ -29,7 +29,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV /home/ec2-user/environment/CPP_Project/venv
+set -gx VIRTUAL_ENV /home/ec2-user/environment/CPP_Project_Compare-main/CPP_Project_Compare-main/venv
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/"bin $PATH

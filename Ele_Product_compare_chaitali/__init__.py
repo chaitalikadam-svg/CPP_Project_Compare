@@ -1,1 +1,0 @@
-from .compare_products import ProductComparator

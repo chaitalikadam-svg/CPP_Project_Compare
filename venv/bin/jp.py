@@ -1,4 +1,4 @@
-#!/home/ec2-user/environment/CPP_Project/venv/bin/python3
+#!/home/ec2-user/environment/CPP_Project_Compare-main/CPP_Project_Compare-main/venv/bin/python3
 
 import sys
 import json

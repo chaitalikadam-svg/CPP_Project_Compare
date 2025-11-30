@@ -1,0 +1,15 @@
+README.md
+__init__.py
+compare_products.py
+db_client.py
+normalizers.py
+setup.py
+./__init__.py
+./compare_products.py
+./db_client.py
+./normalizers.py
+Ele_Product_compare_chaitali.egg-info/PKG-INFO
+Ele_Product_compare_chaitali.egg-info/SOURCES.txt
+Ele_Product_compare_chaitali.egg-info/dependency_links.txt
+Ele_Product_compare_chaitali.egg-info/requires.txt
+Ele_Product_compare_chaitali.egg-info/top_level.txt
