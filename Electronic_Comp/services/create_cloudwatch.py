@@ -43,23 +43,6 @@ dashboard_body = {
                 "region": "us-east-1",
                 "annotations": {}
             }
-        },
-        # SNS Messages Published (SingleValue)
-        {
-            "type": "metric",
-            "x": 6,
-            "y": 6,
-            "width": 6,
-            "height": 6,
-            "properties": {
-                "metrics": [["AWS/SNS", "NumberOfMessagesPublished", "TopicName", topic_name]],
-                "period": 300,
-                "stat": "Sum",
-                "title": "SNS Messages Published",
-                "view": "singleValue",
-                "region": "us-east-1",
-                "annotations": {}
-            }
         }
     ]
 }

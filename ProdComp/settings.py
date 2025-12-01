@@ -131,4 +131,4 @@ STATIC_ROOT = BASE_DIR / 'static'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-SERPAPI_KEY = "81fdcb49baf65ad85a2eb8587eedde9fd65089618a7ec8e3555de5cb0963b520"
+SERPAPI_KEY = "6f12b45589d765b802fb94419d4ee642698038bb652d4be005b3e4320f0427e0"

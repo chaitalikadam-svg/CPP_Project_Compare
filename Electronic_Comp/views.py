@@ -13,8 +13,6 @@ from boto3.dynamodb.conditions import Attr # helps to build a filter expression 
 from .services.serpapi import normalize_products, fetch_google_shopping
 from .services.SNS import notify_user_verified
 from .services.create_bucket import delete_object
-#from .services.create_cloudwatch import CloudWatchMetrics
-from boto3.dynamodb.conditions import Key
 from decimal import Decimal
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -22,7 +20,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from Electronic_Comp.s3_utils import get_presigned_image_url
 from Ele_Product_compare_chaitali.compare_products import ProductComparator
-
 
 
 #Comparing 2 products by using Librarry
@@ -129,7 +126,7 @@ def signup_view(request):
                     {"Name": "preferred_username", "Value": username},
                 ],
             )
-            messages.success(request, "Signup successful! Check your email for the verification code.")
+            #messages.success(request, "Signup successful! Check your email for the verification code.")
             # Send user to verify page
             return redirect("verify", email=email)
 
@@ -245,6 +242,7 @@ def signin_view(request):
 #LOGOUT
 def logout_view(request):
     request.session.flush()
+    list(messages.get_messages(request))  # forcefully clears any queued messages
     return redirect("signup")
     
 #HOMEPAGE
@@ -345,7 +343,6 @@ def serpapi_search_view(request, product_name):
             "competitor_prices": [],
             "error": f"API error: {e}",
         })
-
 
 def competitor_prices(request, productid):
     try:

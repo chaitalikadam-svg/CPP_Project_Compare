@@ -1,7 +1,7 @@
 import boto3
 import json
 
-# Initialization
+# 1. Initialization
 sns = boto3.client("sns")
 cognito = boto3.client("cognito-idp")
 
@@ -24,7 +24,7 @@ def lambda_handler(event, context):
             if attr['Name'] == 'email':
                 emails.append(attr['Value'])
 
-    # 3. Publish to SNS (all subscribers will get it)
+    # 3. Publish to SNS (all subscribers will get it notification)
     message = f"Admin has uploaded new product to compare inside TechieVS, lets compare, review and win"
     response = sns.publish(
         TopicArn=TOPIC_ARN,

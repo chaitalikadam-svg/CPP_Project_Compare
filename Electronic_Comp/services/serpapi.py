@@ -1,6 +1,7 @@
 import requests
 from django.conf import settings
 
+#API to fetch competitor data 
 def fetch_google_shopping(query):
     url = "https://serpapi.com/search.json"
     params = {

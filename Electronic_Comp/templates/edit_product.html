@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Edit Product</title>
-  <!-- Tailwind CSS CDN -->
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500">
@@ -15,6 +15,7 @@
     <div class="flex gap-6">
       <a href="{% url 'add_product' %}" class="hover:text-yellow-400 transition">Add Product</a>
       <a href="{% url 'product_list' %}" class="hover:text-yellow-400 transition">List Product</a>
+      <a href="{% url 'cloudwatch' %}" class="hover:text-yellow-400 transition">Monitor</a>
       <a href="{% url 'logout' %}" class="hover:text-yellow-400 transition">Logout</a>
     </div>
   </nav>
@@ -22,7 +23,6 @@
   <!-- Page Content -->
   <div class="flex items-center justify-center py-10">
     <div class="bg-white/90 backdrop-blur-md shadow-2xl rounded-xl p-10 w-full max-w-2xl">
-      <!-- Heading -->
       <h2 class="text-3xl font-extrabold text-center text-gray-900 mb-8">
         Edit Product
       </h2>
@@ -39,18 +39,18 @@
         </div>
       {% endif %}
 
-      <!-- Form -->
+      <!-- Form to edit product -->
       <form action="{% url 'edit_product' item.category item.productid %}" method="POST" enctype="multipart/form-data" class="space-y-6">
         {% csrf_token %}
 
-        <!-- Category (read-only) -->
+        <!-- Category (read-only as key cant be change) -->
         <div>
           <label for="category" class="block text-sm font-semibold text-gray-700">Category</label>
           <input id="category" type="text" name="category" value="{{ item.category }}" readonly
             class="mt-2 w-full rounded-lg border border-gray-300 px-4 py-2 bg-gray-100 shadow-sm focus:outline-none"/>
         </div>
 
-        <!-- Product ID (read-only) -->
+        <!-- Product ID (read-only as key cant be change) -->
         <div>
           <label for="productid" class="block text-sm font-semibold text-gray-700">Product ID</label>
           <input id="productid" type="text" name="productid" value="{{ item.productid }}" readonly

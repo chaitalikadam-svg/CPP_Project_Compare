@@ -9,9 +9,8 @@ from botocore.exceptions import ClientError
 from django.conf import settings
 
 def get_presigned_image_url(product_id, bucket_name="chaitalibucket1001", region="us-east-1", expires_in=3600):
-    """Generate a pre-signed URL for an S3 object"""
     s3_client = boto3.client("s3", region_name=region)
-    key = product_id  # adjust if you use folders or extensions
+    key = product_id  # connect key as productid
 
     try:
         return s3_client.generate_presigned_url(
@@ -30,12 +29,7 @@ def get_presigned_image_url(product_id, bucket_name="chaitalibucket1001", region
 
 def create_bucket(bucket_name, region=None):
     """Create an S3 bucket in a specified region
-
     If a region is not specified, the bucket is created by default in the region (us-east-1).
-
-    :param bucket_name: Bucket to create
-    :param region: String region to create bucket in, e.g., 'us-west-2'
-    :return: True if bucket created, else False
     """
 
     # Create bucket
@@ -56,7 +50,7 @@ def create_bucket(bucket_name, region=None):
     return True
 
 def list_buckets():
-    # Retrieve the list of existing buckets
+    ''' Retrieve the list of existing buckets '''
     s3_client = boto3.client('s3')
     response = s3_client.list_buckets()
 
