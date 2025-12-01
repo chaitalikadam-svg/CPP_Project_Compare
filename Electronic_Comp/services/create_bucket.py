@@ -1,6 +1,3 @@
-# source: https://boto3.amazonaws.com/v1/documentation/api/latest/guide/s3-examples.html
-# some of the code included here is taken or adapted from the Amazon S3 examples available on Boto3 documentation
-
 import logging
 import boto3
 from django import template

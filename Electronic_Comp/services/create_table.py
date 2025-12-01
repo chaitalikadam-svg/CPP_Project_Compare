@@ -10,7 +10,8 @@ class DynamoDBDemo:
         
         try:
             dynamodb_resource = boto3.resource("dynamodb", region_name = "us-east-1")
-            self.table = dynamodb_resource.create_table(TableName=table_name, KeySchema=key_schema, AttributeDefinitions=attribute_definitions,
+            self.table = dynamodb_resource.create_table(TableName=table_name, KeySchema=key_schema, 
+            AttributeDefinitions=attribute_definitions,
                 ProvisionedThroughput=provisioned_throughput)
 
             # Wait until the table exists.

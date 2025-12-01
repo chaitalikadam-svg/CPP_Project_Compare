@@ -2,7 +2,6 @@ import boto3
 import json
 
 cloudwatch = boto3.client("cloudwatch", region_name="us-east-1")
-
 dashboard_name = "ElectronicProductDashboard"
 bucket_name = "chaitalibucket1001"
 table_name = "ElectronicItem"
